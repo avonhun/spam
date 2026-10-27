@@ -1,0 +1,54 @@
+name: PoliticalQuiet
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: '16.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+targets:
+  PoliticalQuiet:
+    type: application
+    platform: iOS
+    sources: [PoliticalQuiet, Shared]
+    info:
+      path: PoliticalQuiet/Info.plist
+      properties:
+        CFBundleDisplayName: Political Quiet
+        UILaunchScreen: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.PoliticalQuiet
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: MessageFilter
+  MessageFilter:
+    type: app-extension
+    platform: iOS
+    sources: [MessageFilter, Shared]
+    info:
+      path: MessageFilter/Info.plist
+      properties:
+        CFBundleDisplayName: Political Quiet Filter
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.identitylookup.message-filter
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MessageFilterExtension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.PoliticalQuiet.MessageFilter
+        APPLICATION_EXTENSION_API_ONLY: YES
+  ClassifierTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests, Shared]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  PoliticalQuiet:
+    build:
+      targets:
+        PoliticalQuiet: all
+        ClassifierTests: [test]
+    test:
+      targets: [ClassifierTests]
